@@ -1,0 +1,10 @@
+.header-container{
+  height: 50px;
+  background-color: black; 
+}
+
+.header-container p {
+  width: 100%;
+  text-align: right;
+  color: white;
+}

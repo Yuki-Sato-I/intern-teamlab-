@@ -1,0 +1,10 @@
+.footer-container {
+  background-color: black;
+  height: 50px;
+}
+
+.footer-container p {
+  width: 100%;
+  text-align: right;
+  color: white;
+}

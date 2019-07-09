@@ -1,0 +1,32 @@
+.goods-index-container {
+  width: 90%;
+  margin: 0 auto;
+}
+.goods-container{
+  width: calc(130vmin / 4.5);
+  height: calc(130vmin / 4.5);
+  background-color: lightgray;
+  display: inline-block;
+  text-align: center;
+  padding: 0;
+}
+
+.goods-container li {
+  list-style: none;
+}
+
+
+.goods-container img {
+  padding: 3px;
+  width: calc(110vmin / 4.5);
+  height: calc(110vmin / 4.5);
+}
+
+.goods-link {
+  display: inline-block;
+}
+
+.goods-name {
+  text-decoration: none;
+  color: black;
+}
