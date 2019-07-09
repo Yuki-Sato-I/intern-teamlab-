@@ -1,0 +1,3 @@
+@php
+dd($goods);   
+@endphp

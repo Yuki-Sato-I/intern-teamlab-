@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use app\lib\Helper;
 
 class GoodsController extends Controller
 {
     
     public function index(){
-        $baseUrl = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php";
-        $response = file_get_contents($baseUrl);
-        $goodsInfo = json_decode($response,true);
+        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php";
+        $goodsInfo = Helper::api_return_result($url);
 
         return view('goods/index', compact('goodsInfo'));
     }
@@ -22,7 +21,10 @@ class GoodsController extends Controller
     }
 
     public function show($id){
+        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?id={$id}";
+        $goods = Helper::api_return_result($url);
 
+        return view('goods/show', compact('goods'));
     }
 
     public function create(){
