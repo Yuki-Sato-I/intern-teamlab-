@@ -5,33 +5,16 @@ namespace app\lib;
 class Helper {
   
   public static function api_return_result($url) {
-    //自分で処理したいから自動エラーなくす
-    /*
+
+    //自分で処理したいから自動エラーなくす    
     $context = stream_context_create(["http"=> ["ignore_errors" => true]]);
     $response = file_get_contents($url, false, $context);
-    if($response === false) {
-      if(isset($http_response_header) && count($http_response_header) > 0) {
-        $status = explode(' ', $http_response_header[0]);
-        switch($status) {
-          case 404:
-            // Not Found
-            break;
-          case 500:
-            // Internal Server Error
-            break;
-          default:
-            // その他
-            break;
-        }
-      } else {
-            // タイムアウト
-      }
-    }
-    */
-    $response = file_get_contents($url);
-    return json_decode($response, true);
-  }
+    
+    preg_match('/HTTP\/1\.[0|1|x] ([0-9]{3})/', $http_response_header[0], $matches);
+    $statusCode = $matches[1];
 
+    return [intval($statusCode), json_decode($response, true)];
+  }
 }
 
 ?>
