@@ -13,12 +13,15 @@ class Helper {
     
     preg_match('/HTTP\/1\.[0|1|x] ([0-9]{3})/', $http_response_header[0], $matches);
     $statusCode = $matches[1];
-    //200だったらデータを渡す。それ以外はステータスコード渡す。
+    /*
     if ($statusCode == '200') {
       return json_decode($response, true);
     } else {
       return $statusCode;
     }
+    */
+
+    return [intval($statusCode), json_decode($response, true)];
   }
 }
 

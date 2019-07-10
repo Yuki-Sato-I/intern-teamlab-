@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Route::resource('goods', 'GoodsController');
 
+Route::get('/404error', function() {
+    return view('layouts/404error');
+});
+
 Route::get('/error', function() {
     return view('layouts/error');
 });
