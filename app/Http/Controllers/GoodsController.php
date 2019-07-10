@@ -7,7 +7,7 @@ use app\lib\Helper;
 
 class GoodsController extends Controller
 {
-    
+    //ここのエラー処理なんかヤダ
     public function index(){
         $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php";
         $data = Helper::api_return_result($url);

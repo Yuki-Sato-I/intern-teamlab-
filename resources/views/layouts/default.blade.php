@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <title>Laravel</title>
+  <title>
+    @section('title')
+      Laravel
+    @show
+  </title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{asset('css/header.css')}}">
   <link rel="stylesheet" href="{{asset('css/footer.css')}}">

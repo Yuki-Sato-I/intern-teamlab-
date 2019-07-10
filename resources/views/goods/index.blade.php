@@ -1,5 +1,7 @@
 @extends('layouts/default')
 
+@section('title', '商品ページ')
+
 @section('content')
 <h1 class="index-title">商品ページ</h1>
 <div class="goods-index-container">
