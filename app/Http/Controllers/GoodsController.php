@@ -30,7 +30,7 @@ class GoodsController extends Controller
     }
 
     public function show($id){
-        $url = "https://ifive.sakura.ne.jp/yuki/yuksi_goods.php?id={$id}";
+        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?id={$id}";
         $data = Helper::api_return_result($url);
         switch($data[0]){
             case 200:

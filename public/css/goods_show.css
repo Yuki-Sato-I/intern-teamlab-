@@ -3,3 +3,31 @@
   width: 95%;
   margin: 0 auto;
 }
+
+.goods-show-goods {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+}
+
+.goods-show-goods img {
+  width: calc(50vmin);
+  height: calc(50vmin);
+  margin: 20px auto;
+}
+
+.goods-show-detail {
+  width: 50%;
+  display: inline-block;
+  margin-left: 10%;
+  margin-bottom: 200px; /*ここは一時的*/
+}
+
+.goods-show-goods h1{
+  text-align: center;
+}
+
+.goods-show-content {
+  font-size: 20px;
+  margin-top: 30px;
+}

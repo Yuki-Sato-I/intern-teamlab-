@@ -3,7 +3,7 @@
 @section('title', '商品ページ')
 
 @section('content')
-<h1 class="index-title">商品ページ</h1>
+<h1 class="goods-index-title">商品ページ</h1>
 <div class="goods-index-container">
 @foreach ($goodsInfo as $item)
 <a class="goods-link" href={{ url("/goods/{$item['id']}") }}>
