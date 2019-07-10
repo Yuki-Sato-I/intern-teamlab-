@@ -23,8 +23,12 @@ class GoodsController extends Controller
     public function show($id){
         $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?id={$id}";
         $goods = Helper::api_return_result($url);
-
-        return view('goods/show', compact('goods'));
+        //errorコードだったら
+        if (ctype_digit($goods)) {
+            return view('layouts/error', ['statusCode' => $goods]);
+        }else{
+            return view('goods/show', ['goods' => current($goods)]);
+        }
     }
 
     public function create(){

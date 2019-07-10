@@ -16,3 +16,7 @@ Route::get('/', function () {
 });
 
 Route::resource('goods', 'GoodsController');
+
+Route::get('/error', function() {
+    return view('layouts/error');
+});
