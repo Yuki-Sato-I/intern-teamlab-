@@ -46,11 +46,46 @@ class GoodsController extends Controller
     }
 
     public function create(){
-
+        return view('goods/create');
     }
 
-    public function store(){
+    public function store(Request $request){
+        //base64にエンコードして保存する
+        if (!empty($request->file('goods_image'))) {
+            $mimeType = $request->file('goods_image')->getMimeType();
+            $imageData = "data:" . $mimeType . ";base64," . base64_encode(file_get_contents($request->file('goods_image')->getRealPath()));
+        } else {
+            $imageData = null;
+        }
+        
+        $data = [
+            'image' => $imageData,
+            'title' => $request->input('goods_title'),
+            'content' => $request->input('goods_content'),
+            'price' => (int)$request->input('goods_price'),
+            'shop' => $request->input('goods_shop')
+        ];
 
+        $data = json_encode($data);
+
+        $options = [
+            // HTTPコンテキストオプションをセット
+            'http' => [
+                'method'=> 'POST',
+                'header'=> 'Content-type: application/json; charset=UTF-8', //json形式で送る
+                'content' => $data
+                ]
+        ];
+        $context = stream_context_create($options);
+        $contents = file_get_contents('https://ifive.sakura.ne.jp/yuki/yuki_goods.php', false, $context);
+
+        if (json_decode($contents)->status == "OK"){
+            $message = "登録に成功しました";
+        }else{
+            $message = "登録に失敗しました";
+        }
+        
+        return redirect('/goods')->with('flashMessage', $message);
     }
 
     public function edit($id){
