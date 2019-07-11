@@ -14,6 +14,7 @@
       <h2 style="text-align: center;"><!-- ショップリンク,後で追加する。 -->
         {{ $goods['price'] }}円 | <a href="/">{{ $goods['shop'] }}</a>
       </h2>
+      <p><a href={{ url("goods/{$goods['id']}/edit") }}>編集</a><a href="/">削除</a></p>
     </div>
     <div class="goods-show-detail">
       <h1>{{ $goods['title'] }}</h1>

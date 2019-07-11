@@ -89,7 +89,7 @@ class GoodsController extends Controller
     }
 
     public function edit($id){
-
+        return view('goods/edit');
     }
 
     public function update($id){
