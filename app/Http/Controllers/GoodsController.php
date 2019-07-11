@@ -79,13 +79,13 @@ class GoodsController extends Controller
         $context = stream_context_create($options);
         $contents = file_get_contents('https://ifive.sakura.ne.jp/yuki/yuki_goods.php', false, $context);
 
-        if (json_decode($contents)->status == "OK"){
-            $message = "登録に成功しました";
+        if (!empty(json_decode($contents)->status)){
+            $flash = ["success" => "登録に成功しました"];
         }else{
-            $message = "登録に失敗しました";
+            $flash = ["danger" => "登録に失敗しました"];
         }
         
-        return redirect('/goods')->with('flashMessage', $message);
+        return redirect('/goods')->with('flash', $flash);
     }
 
     public function edit($id){
