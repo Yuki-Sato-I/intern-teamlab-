@@ -11,8 +11,17 @@
   <link rel="stylesheet" href="{{asset('css/footer.css')}}">
   <link rel="stylesheet" href="{{asset('css/goods_index.css')}}">
   <link rel="stylesheet" href="{{asset('css/goods_show.css')}}">
+  <link rel="stylesheet" href="{{asset('css/goods_create.css')}}">
 </head>
 @include('layouts/header')
+@if(Session::has('flash'))
+@foreach (session('flash') as $type => $message)
+  <div class="alert alert-{{$type}}">
+    メッセージ：{{ $message }}
+  </div>
+@endforeach
+
+@endif
 
 @yield('content')
 
