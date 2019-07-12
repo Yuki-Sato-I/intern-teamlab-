@@ -151,6 +151,21 @@ class GoodsController extends Controller
     }
 
     public function destroy($id){
+        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?id={$id}";
+        $options = [
+            'http' => [
+                'method' => 'DELETE'
+                ]
+            ];
+        $context = stream_context_create($options);
+        $contents = file_get_contents($url, false, $context);
 
+        if (!empty(json_decode($contents)->status)){
+            $flash = ["success" => "削除に成功しました"];
+        }else{
+            $flash = ["danger" => "削除に失敗しました"];
+        }
+
+        return redirect("/goods")->with('flash', $flash);
     }
 }
