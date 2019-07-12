@@ -89,11 +89,65 @@ class GoodsController extends Controller
     }
 
     public function edit($id){
-        return view('goods/edit');
+        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?id={$id}";
+        $data = Helper::api_return_result($url);
+
+        switch($data[0]){
+            case 200:
+                $goods = current($data[1]);
+            break;
+            case 404:
+                return redirect('/404error');
+            break;
+            default :
+                return redirect('/error');
+            break;
+        }
+
+        return view('goods/edit', ['goods' => current($data[1])]);
     }
 
-    public function update($id){
+    public function update($id, Request $request){
+        $url = 'https://ifive.sakura.ne.jp/yuki/yuki_goods.php';
+        //base64にエンコードして保存する
+        if (!empty($request->file('goods_image'))) {
+            $mimeType = $request->file('goods_image')->getMimeType();
+            $imageData = "data:" . $mimeType . ";base64," . base64_encode(file_get_contents($request->file('goods_image')->getRealPath()));
+        } else {
+            $imageData = null;
+        }
+                
+        $data = [
+            'id' => $id,
+            'image' => $imageData,
+            'title' => $request->input('goods_title'),
+            'content' => $request->input('goods_content'),
+            'price' => (int)$request->input('goods_price'),
+            'shop' => $request->input('goods_shop')
+        ];
 
+        $data = json_encode($data);
+
+        $options = [
+            // HTTPコンテキストオプションをセット
+            'http' => [
+                'method' => 'PUT',
+                'header' => 'Content-type: application/json; charset=UTF-8', //json形式で送る
+                'content' => $data
+                ]
+        ];
+
+        $context = stream_context_create($options);
+        $contents = file_get_contents($url, false, $context);
+
+
+        if (!empty(json_decode($contents)->status)){
+            $flash = ["success" => "編集に成功しました"];
+        }else{
+            $flash = ["danger" => "編集に失敗しました"];
+        }
+
+        return redirect("/goods/{$id}")->with('flash', $flash);
     }
 
     public function destroy($id){
