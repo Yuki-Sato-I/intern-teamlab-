@@ -3,6 +3,7 @@
 @section('title', '商品ページ')
 
 @section('content')
+
 <h1 class="goods-index-title">商品ページ</h1>
 <div class="goods-index-container">
 @foreach ($goodsInfo as $item)

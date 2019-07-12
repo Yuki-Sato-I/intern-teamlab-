@@ -4,8 +4,8 @@ namespace app\lib;
 
 class Helper {
   
+  //渡されたurlを叩いてデータを取得する関数
   public static function api_return_result($url) {
-
     //自分で処理したいから自動エラーなくす    
     $context = stream_context_create(["http"=> ["ignore_errors" => true]]);
     $response = file_get_contents($url, false, $context);
