@@ -104,7 +104,7 @@ class GoodsController extends Controller
             break;
         }
 
-        return view('goods/edit', ['goods' => current($data[1])]);
+        return view('goods/edit', ['goods' => $goods]);
     }
 
     public function update($id, Request $request){
