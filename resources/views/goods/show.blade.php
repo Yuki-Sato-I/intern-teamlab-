@@ -27,8 +27,7 @@
         <a onclick="deleteGoods(this);" href="#" class="btn btn-danger btn-sm">削除</a></p>
     </div>
     <div class="goods-show-detail">
-      <!-- ショップリンク,後で追加する. -->
-      <h1>{{ $goods['title'] }}[<a href="/">{{ $goods['shop'] }}</a>]</h1>
+      <h1>{{ $goods['title'] }}</h1>
       <div class="goods-show-content">
         {!! nl2br(e($goods['content'], false)) !!}
       </div>
