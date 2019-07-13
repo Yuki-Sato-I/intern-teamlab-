@@ -4,13 +4,29 @@
 <link rel="stylesheet" href="{{asset('css/goods_index.css')}}">
 @endsection
 
-@section('title', '商品ページ')
+@section('title', '商品検索結果')
 
 @section('content')
 
-<h1 class="goods-index-title">商品ページ</h1>
+<h1 class="goods-index-title">検索結果</h1>
+<p style="text-align:center;">
+  検索条件(
+@foreach ($searchInfo as $key => $value)
+@if ($key == 'shop')
+  ショップ名
+@elseif ($key == 'title')
+  商品名
+@elseif ($key == 'priceLower')
+  最低価格
+@elseif ($key == "priceUpper")
+  最高価格
+@endif
+:{{$value}},
+@endforeach
+  )
+</p>
 <div class="goods-index-container">
-@foreach ($goodsInfo as $item)
+@foreach ($goods as $item)
 <a class="goods-link" href={{ url("/goods/{$item['id']}") }}>
   <ul class="goods-container">
     <li><span>
@@ -26,6 +42,3 @@
 @endforeach
 </div>
 @endsection
-
-
-

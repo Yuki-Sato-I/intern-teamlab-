@@ -24,3 +24,7 @@ Route::get('/404error', function() {
 Route::get('/error', function() {
     return view('layouts/error');
 });
+
+Route::get('/search', 'GoodsController@search');
+
+Route::get('/search-index', 'GoodsController@search_index');
