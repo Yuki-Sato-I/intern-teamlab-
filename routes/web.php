@@ -28,3 +28,7 @@ Route::get('/error', function() {
 Route::get('/search', 'GoodsController@search');
 
 Route::get('/search-index', 'GoodsController@search_index');
+
+Route::get('/shops', 'ShopsController@index');
+
+Route::get('/shops/{id}', 'ShopsController@show');
