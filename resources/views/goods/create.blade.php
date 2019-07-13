@@ -1,5 +1,9 @@
 @extends('layouts/default')
 
+@section('css')
+<link rel="stylesheet" href="{{asset('css/goods_create.css')}}">
+@endsection
+
 @section('title', '新規商品登録')
 
 @section('content')
