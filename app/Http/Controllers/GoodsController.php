@@ -24,7 +24,7 @@ class GoodsController extends Controller
         }
     }
 
-    //ここは後で　検索用
+    //検索用
     public function search(){
         return view('goods/search');
     }
