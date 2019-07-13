@@ -8,3 +8,8 @@
   text-align: right;
   color: white;
 }
+
+.header-container a {
+  text-decoration: none;
+  color: white;
+}

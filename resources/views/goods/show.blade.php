@@ -19,16 +19,15 @@
       @else
         <img src={{ $goods['image'] }}>
       @endif
-      <h2 style="text-align: center;">{{ $goods['price'] }}円</h2>
-      <p><a href={{ url("goods/{$goods['id']}/edit") }} class="btn btn-primary btn-sm">編集</a>
-        <form action="/goods/{{ $goods['id'] }}" method="post" id="del">
+      <h2 style="text-align: center;">{{ $goods['price'] }}円 | 
+      <a href={{ url("goods/{$goods['id']}/edit") }} class="btn btn-primary btn-sm">編集</a>
+        <form action="/goods/{{ $goods['id'] }}" method="post" id="del" style="display: inline-block;">
           @csrf
           {{ method_field('delete') }}
-        <a onclick="deleteGoods(this);" href="#" class="btn btn-danger btn-sm">削除</a></p>
+        <a onclick="deleteGoods(this);" href="#" class="btn btn-danger btn-sm">削除</a></h2>
     </div>
     <div class="goods-show-detail">
-      <!-- ショップリンク,後で追加する. -->
-      <h1>{{ $goods['title'] }}[<a href="/">{{ $goods['shop'] }}</a>]</h1>
+      <h1>{{ $goods['title'] }}</h1>
       <div class="goods-show-content">
         {!! nl2br(e($goods['content'], false)) !!}
       </div>
