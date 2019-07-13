@@ -26,7 +26,42 @@ class GoodsController extends Controller
 
     //ここは後で　検索用
     public function search(){
+        return view('goods/search');
+    }
 
+    public function search_index(Request $request){
+        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?";
+
+        $title = $request->input('goods_title');
+        $shop = $request->input('goods_shop');
+        $priceLower = $request->input('price_lower');
+        $priceUpper = $request->input('price_upper');
+        $searchInfo = [];
+        if (!empty($title)) {
+            $url .= "title={$title}&";
+            $searchInfo += ["title" => $title]; 
+        }
+        if (!empty($shop)) {
+            $url .= "shop={$shop}&";
+            $searchInfo += ["shop" => $shop];
+        }
+        //0がemptyになるため
+        if (!($priceLower === null) && !($priceUpper === null)) {
+            $url .= "priceLower={$priceLower}&priceUpper={$priceUpper}";
+            $searchInfo += ["priceLower" => (int)$priceLower, "priceUpper" => (int)$priceUpper];
+        }
+        $data = Helper::api_return_result($url);
+        switch($data[0]){
+            case 200:
+                return view('goods/search_index', ['goods' => $data[1], 'searchInfo' => $searchInfo]);
+            break;
+            case 404:
+                return redirect('/404error');
+            break;
+            default :
+                return redirect('/error');
+            break;
+        }
     }
 
     public function show($id){
