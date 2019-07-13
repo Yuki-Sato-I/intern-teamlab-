@@ -2,11 +2,15 @@
 
 @section('title', '商品検索')
 
+@section('script')
+  <script src="{{ asset('js/goods_search.js') }}" type="text/javascript"></script> 
+@endsection
+
 @section('content')
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <h1>商品情報検索</h1>
-    <form action="/search-index" method="get" enctype="multipart/form-data">
+    <form action="/search-index" method="get" enctype="multipart/form-data" name="form">
       @csrf
       <div>
         <label for="title">商品名</label>
@@ -29,7 +33,7 @@
         <input type="text" id="shop" name="goods_shop" class="form-control">
       </div>
       <div>
-        <input type="submit" value="送信" class="btn btn-primary btn-block">
+        <input type="submit" value="送信" class="btn btn-primary btn-block"  onclick="check(this);return false;">
       </div>
     </form>
   </div>
