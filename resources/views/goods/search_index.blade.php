@@ -3,9 +3,7 @@
 @section('title', '商品検索結果')
 
 @section('content')
-@php
-    //dd($searchInfo);
-@endphp
+
 <h1 class="goods-index-title">検索結果</h1>
 <p style="text-align:center;">
   検索条件(
