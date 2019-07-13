@@ -32,14 +32,6 @@
         <label for="shop">ショップ名</label>
         <input type="text" id="shop" name="goods_shop" class="form-control" required>
       </div>
-      <!-- 店の概念を追加した時,に使う部分 -->
-      <!--
-      <select name="goods_shop" required>
-        <option></option>
-        <option value="0">男性</option>
-        <option value="1">女性</option>
-      </select><br>
-      -->
       <div>
         <input type="submit" class="btn btn-primary btn-block" value="送信">
       </div>
