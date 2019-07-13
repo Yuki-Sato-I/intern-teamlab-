@@ -17,8 +17,8 @@
         <label for="content">商品詳細</label>
         <textarea id="content" name="goods_content" class="form-control" rows="6" required>{{$goods['content']}}</textarea>
         
-        <label for="image">商品画像</label>
-        <input type="file" id="image" name="goods_image" value={{$goods['image']}} class="form-control">
+        <label for="image">商品画像(png,jpeg,jpgのみ)</label>
+        <input type="file" id="image" name="goods_image" value={{$goods['image']}} class="form-control" accept="image/png, image/jpeg, image/jpg">
         
         <label for="price">商品値段</label>
         <input type="number" id="price" name="goods_price" value={{$goods['price']}} class="form-control" required>
