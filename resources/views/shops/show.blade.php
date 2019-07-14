@@ -1,8 +1,8 @@
 @extends('layouts/default')
 
 @section('css')
-<link rel="stylesheet" href="{{asset('css/goods_show.css')}}">
-<link rel="stylesheet" href="{{asset('css/goods_index.css')}}">
+<link rel="stylesheet" href="{{ secure_asset('css/goods_show.css') }}">
+<link rel="stylesheet" href="{{ secure_asset('css/goods_index.css') }}">
 @endsection
 
 @section('title', $shop['name'].'のページ')
@@ -12,7 +12,7 @@
   <div class="goods-show-goods">
     <div class="goods-image-price">
       @if (!isset($shop['image']))
-        <img src="{{ asset('image/noimage.png') }}">
+        <img src="{{ secure_asset('image/noimage.png') }}">
       @else
         <img src={{ $shop['image'] }}>
       @endif
@@ -32,7 +32,7 @@
     <ul class="goods-container">
       <li><span>
         @if (!isset($item['image']))
-          <img src="{{ asset('image/noimage.png') }}">
+          <img src="{{ secure_asset('image/noimage.png') }}">
         @else 
           <img src="{{ $item['image'] }}">
         @endif

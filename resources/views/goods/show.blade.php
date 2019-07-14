@@ -1,11 +1,11 @@
 @extends('layouts/default')
 
 @section('css')
-<link rel="stylesheet" href="{{asset('css/goods_show.css')}}">
+<link rel="stylesheet" href="{{ secure_asset('css/goods_show.css') }}">
 @endsection
 
 @section('script')
-  <script src="{{ asset('js/goods_show.js') }}" type="text/javascript"></script> 
+  <script src="{{ secure_asset('js/goods_show.js') }}" type="text/javascript"></script> 
 @endsection
 
 @section('title', $goods['title'].'のページ')
@@ -15,7 +15,7 @@
   <div class="goods-show-goods">
     <div class="goods-image-price">
       @if (!isset($goods['image']))
-        <img src="{{ asset('image/noimage.png') }}">
+        <img src="{{ secure_asset('image/noimage.png') }}">
       @else
         <img src={{ $goods['image'] }}>
       @endif
