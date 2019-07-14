@@ -19,8 +19,8 @@
         <label for="content">商品詳細</label>
         <textarea name="goods_content" id="content" rows="6" class="form-control" required></textarea>
 
-        <label for="image">商品画像</label>
-        <input type="file" id="image" name="goods_image">
+        <label for="image">商品画像(png,jpeg,jpgのみ)</label>
+        <input type="file" id="image" name="goods_image" accept="image/png, image/jpeg, image/jpg">
 
         <label for="price">商品値段</label>
         <input type="number" id="price" name="goods_price" class="form-control" required>
