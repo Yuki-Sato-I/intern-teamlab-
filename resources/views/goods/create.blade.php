@@ -26,7 +26,15 @@
         <input type="number" id="price" name="goods_price" class="form-control" min="0" required>
 
         <label for="shop">ショップ名</label>
+        <select name="goods_shop" required>
+          <option></option>
+          @foreach ($shops as $shop)
+            <option value={{ $shop["name"] }}>{{ $shop["name"] }}</option>
+          @endforeach
+        </select><br>
+        <!--
         <input type="text" id="shop" name="goods_shop" class="form-control" required>
+        -->
         <div style="margin: 10px auto;">
           <input type="submit" class="btn btn-primary btn-block" value="送信">
         </div>

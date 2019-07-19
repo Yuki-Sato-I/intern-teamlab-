@@ -81,7 +81,19 @@ class GoodsController extends Controller
     }
 
     public function create(){
-        return view('goods/create');
+        $url = "https://ifive.sakura.ne.jp/yuki/yuki_shop.php";
+        $data = Helper::api_return_result($url);
+        switch($data[0]){
+            case 200:
+                return view('goods/create', ['shops' => $data[1]]);
+            break;
+            case 404:
+                return redirect('/404error');
+            break;
+            default :
+                return redirect('/error');
+            break;
+        }
     }
 
     public function store(Request $request){
