@@ -1,7 +1,7 @@
 @extends('layouts/default')
 
 @section('css')
-<link rel="stylesheet" href="{{ secure_asset('css/goods_create.css') }}">
+<link rel="stylesheet" href="{{ asset('css/goods_create.css') }}">
 @endsection
 
 @section('title', '新規商品登録')
