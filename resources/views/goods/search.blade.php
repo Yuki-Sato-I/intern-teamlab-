@@ -3,7 +3,7 @@
 @section('title', '商品検索')
 
 @section('script')
-  <script src="{{ secure_asset('js/goods_search.js') }}" type="text/javascript"></script> 
+  <script src="{{ asset('js/goods_search.js') }}" type="text/javascript"></script> 
 @endsection
 
 @section('content')

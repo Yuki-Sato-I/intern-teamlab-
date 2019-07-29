@@ -1,7 +1,7 @@
 @extends('layouts/default')
 
 @section('css')
-<link rel="stylesheet" href="{{ secure_asset('css/goods_index.css') }}">
+<link rel="stylesheet" href="{{ asset('css/goods_index.css') }}">
 @endsection
 
 @section('title', '商品検索結果')
@@ -31,7 +31,7 @@
   <ul class="goods-container">
     <li><span>
       @if (!isset($item['image']))
-        <img src="{{ secure_asset('image/noimage.png') }}">
+        <img src="{{ asset('image/noimage.png') }}">
       @else 
         <img src="{{ $item['image'] }}">
       @endif
