@@ -26,7 +26,19 @@ class GoodsController extends Controller
 
     //検索用
     public function search(){
-        return view('goods/search');
+        $url = "https://ifive.sakura.ne.jp/yuki/yuki_shop.php?";
+        $data = Helper::api_return_result($url);
+        switch($data[0]){
+            case 200:
+                return view('goods/search', ['shops' => $data[1]]);
+            break;
+            case 404:
+                return redirect('/404error');
+            break;
+            default :
+                return redirect('/error');
+            break;
+        }
     }
 
     public function search_index(Request $request){
