@@ -129,13 +129,17 @@ class GoodsController extends Controller
     //編集ページ
     public function edit($id){
         $url = config('url.goods').'?id='.$id;
-        $data = Helper::api_return_result($url);
+        $goodsData = Helper::api_return_result($url);
 
-        if($data != ["失敗"]){
-            return view('goods/edit', ['goods' => $data]);
-        } else {
-            return redirect('/error');
+        if($goodsData != ["失敗"]){
+            $url = config('url.shop');
+            $shopsData = Helper::api_return_result($url);
+            if($shopsData != ["失敗"]){
+                return view('goods/edit', ['goods' => $goodsData, 'shops' => $shopsData]);
+            }
         }
+
+        return redirect('/error');
     }
 
     //商品編集
@@ -157,7 +161,6 @@ class GoodsController extends Controller
             'price' => (int)$request->input('goods_price'),
             'shop' => $request->input('goods_shop')
         ];
-
         $data = json_encode($data);
 
         $options = [

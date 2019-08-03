@@ -25,7 +25,7 @@
         <label for="price">商品値段</label>
         <input type="number" id="price" name="goods_price" class="form-control" min="0" required>
 
-        <label for="shop">ショップ名</label>
+        <label for="shop">ショップ名</label><br>
         <select name="goods_shop" required>
           <option></option>
           @foreach ($shops as $shop)

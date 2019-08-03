@@ -7,6 +7,7 @@ use app\lib\Helper;
 
 class ShopsController extends Controller
 {
+    //一覧ページ
     public function index(){
         $url = config('url.shop');
         $data = Helper::api_return_result($url);
@@ -18,6 +19,7 @@ class ShopsController extends Controller
         }
     }
 
+    //詳細ページ
     public function show($id){
         $url = config('url.shop').'?id='.$id;
         $shopData = Helper::api_return_result($url);

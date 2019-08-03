@@ -29,7 +29,7 @@
         </div>
       </div>
       <div>
-        <label for="shop">ショップ名</label>
+        <label for="shop">ショップ名</label><br>
         <select name="goods_shop" required>
           <option></option>
           @foreach ($shops as $shop)

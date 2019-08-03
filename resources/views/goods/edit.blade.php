@@ -22,9 +22,14 @@
         
         <label for="price">商品値段</label>
         <input type="number" id="price" name="goods_price" value={{$goods['price']}} class="form-control" required>
-        
-        <label for="shop">ショップ名</label>
-        <input type="text" id="shop" name="goods_shop" value={{$goods['shop']}} class="form-control" required>
+
+        <label for="shop">ショップ名</label><br>
+        <select name="goods_shop" required>
+          <option></option>
+          @foreach ($shops as $shop)
+            <option value={{ $shop["name"] }}>{{ $shop["name"] }}</option>
+          @endforeach
+        </select><br>
         <div style="margin: 10px auto;">
           <input type="submit" value="送信" class="btn btn-primary btn-block">
         </div>
