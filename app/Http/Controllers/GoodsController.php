@@ -7,40 +7,31 @@ use app\lib\Helper;
 
 class GoodsController extends Controller
 {
-    //ここのエラー処理なんかヤダ
+    //一覧ページ
     public function index(){
         $url = config('url.goods');
         $data = Helper::api_return_result($url);
-        switch($data[0]){
-            case 200:
-                return view('goods/index', ['goodsInfo' => $data[1]]);
-            break;
-            case 404:
-                return redirect('/404error');
-            break;
-            default :
-                return redirect('/error');
-            break;
+
+        if($data != ["失敗"]){
+            return view('goods/index', ['goodsInfo' => $data]);
+        } else {
+            return redirect('/error');
         }
     }
 
-    //検索用
+    //検索ページ
     public function search(){
         $url = config('url.shop');
         $data = Helper::api_return_result($url);
-        switch($data[0]){
-            case 200:
-                return view('goods/search', ['shops' => $data[1]]);
-            break;
-            case 404:
-                return redirect('/404error');
-            break;
-            default :
-                return redirect('/error');
-            break;
+
+        if($data != ["失敗"]){
+            return view('goods/search', ['shops' => $data]);
+        } else {
+            return redirect('/error');
         }
     }
 
+    //検索結果ページ
     public function search_index(Request $request){
         $url = config('url.goods').'?';
 
@@ -64,53 +55,38 @@ class GoodsController extends Controller
             $searchInfo += ["priceLower" => (int)$priceLower, "priceUpper" => (int)$priceUpper];
         }
         $data = Helper::api_return_result($url);
-        switch($data[0]){
-            case 200:
-                return view('goods/search_index', ['goods' => $data[1], 'searchInfo' => $searchInfo]);
-            break;
-            case 404:
-                return redirect('/404error');
-            break;
-            default :
-                return redirect('/error');
-            break;
+        if($data != ["失敗"]){
+            return view('goods/search_index', ['goods' => $data, 'searchInfo' => $searchInfo]);
+        } else {
+            return redirect('/error');
         }
     }
 
+    //詳細ページ
     public function show($id){
         $url = config('url.goods').'?id='.$id;
-
         $data = Helper::api_return_result($url);
-        switch($data[0]){
-            case 200:
-                return view('goods/show', ['goods' => current($data[1])]);
-            break;
-            case 404:
-                return redirect('/404error');
-            break;
-            default :
-                return redirect('/error');
-            break;
+
+        if($data != ["失敗"]){
+            return view('goods/show', ['goods' => $data]);
+        } else {
+            return redirect('/error');
         }
     }
 
+    //新規登録ページ
     public function create(){
         $url = config('url.shop');
-
         $data = Helper::api_return_result($url);
-        switch($data[0]){
-            case 200:
-                return view('goods/create', ['shops' => $data[1]]);
-            break;
-            case 404:
-                return redirect('/404error');
-            break;
-            default :
-                return redirect('/error');
-            break;
+
+        if($data != ["失敗"]){
+            return view('goods/create', ['shops' => $data]);
+        } else {
+            return redirect('/error');
         }
     }
 
+    //商品登録
     public function store(Request $request){
         //base64にエンコードして保存する
         if (!empty($request->file('goods_image'))) {
@@ -150,25 +126,19 @@ class GoodsController extends Controller
         return redirect('/goods')->with('flash', $flash);
     }
 
+    //編集ページ
     public function edit($id){
         $url = config('url.goods').'?id='.$id;
         $data = Helper::api_return_result($url);
 
-        switch($data[0]){
-            case 200:
-                $goods = current($data[1]);
-            break;
-            case 404:
-                return redirect('/404error');
-            break;
-            default :
-                return redirect('/error');
-            break;
+        if($data != ["失敗"]){
+            return view('goods/edit', ['goods' => $data]);
+        } else {
+            return redirect('/error');
         }
-
-        return view('goods/edit', ['goods' => $goods]);
     }
 
+    //商品編集
     public function update($id, Request $request){
         $url = config('url.goods');
         //base64にエンコードして保存する
@@ -212,6 +182,7 @@ class GoodsController extends Controller
         return redirect("/goods/{$id}")->with('flash', $flash);
     }
 
+    //商品削除
     public function destroy($id){
         $url = config('url.goods').'?id='.$id;
         $options = [
