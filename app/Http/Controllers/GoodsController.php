@@ -7,36 +7,40 @@ use app\lib\Helper;
 
 class GoodsController extends Controller
 {
-    //ここのエラー処理なんかヤダ
+    //一覧ページ
     public function index(){
-        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php";
+        $url = config('url.goods');
         $data = Helper::api_return_result($url);
-        switch($data[0]){
-            case 200:
-                return view('goods/index', ['goodsInfo' => $data[1]]);
-            break;
-            case 404:
-                return redirect('/404error');
-            break;
-            default :
-                return redirect('/error');
-            break;
+
+        if($data != ["失敗"]){
+            return view('goods/index', ['goodsInfo' => $data]);
+        } else {
+            return redirect('/error');
         }
     }
 
-    //検索用
+    //検索ページ
     public function search(){
-        return view('goods/search');
+        $url = config('url.shop');
+        $data = Helper::api_return_result($url);
+
+        if($data != ["失敗"]){
+            return view('goods/search', ['shops' => $data]);
+        } else {
+            return redirect('/error');
+        }
     }
 
+    //検索結果ページ
     public function search_index(Request $request){
-        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?";
+        $url = config('url.goods').'?';
 
         $title = $request->input('goods_title');
         $shop = $request->input('goods_shop');
         $priceLower = $request->input('price_lower');
         $priceUpper = $request->input('price_upper');
         $searchInfo = [];
+
         if (!empty($title)) {
             $url .= "title={$title}&";
             $searchInfo += ["title" => $title]; 
@@ -51,39 +55,38 @@ class GoodsController extends Controller
             $searchInfo += ["priceLower" => (int)$priceLower, "priceUpper" => (int)$priceUpper];
         }
         $data = Helper::api_return_result($url);
-        switch($data[0]){
-            case 200:
-                return view('goods/search_index', ['goods' => $data[1], 'searchInfo' => $searchInfo]);
-            break;
-            case 404:
-                return redirect('/404error');
-            break;
-            default :
-                return redirect('/error');
-            break;
+        if($data != ["失敗"]){
+            return view('goods/search_index', ['goods' => $data, 'searchInfo' => $searchInfo]);
+        } else {
+            return redirect('/error');
         }
     }
 
+    //詳細ページ
     public function show($id){
-        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?id={$id}";
+        $url = config('url.goods').'?id='.$id;
         $data = Helper::api_return_result($url);
-        switch($data[0]){
-            case 200:
-                return view('goods/show', ['goods' => current($data[1])]);
-            break;
-            case 404:
-                return redirect('/404error');
-            break;
-            default :
-                return redirect('/error');
-            break;
+
+        if($data != ["失敗"]){
+            return view('goods/show', ['goods' => $data]);
+        } else {
+            return redirect('/error');
         }
     }
 
+    //新規登録ページ
     public function create(){
-        return view('goods/create');
+        $url = config('url.shop');
+        $data = Helper::api_return_result($url);
+
+        if($data != ["失敗"]){
+            return view('goods/create', ['shops' => $data]);
+        } else {
+            return redirect('/error');
+        }
     }
 
+    //商品登録
     public function store(Request $request){
         //base64にエンコードして保存する
         if (!empty($request->file('goods_image'))) {
@@ -106,13 +109,13 @@ class GoodsController extends Controller
         $options = [
             // HTTPコンテキストオプションをセット
             'http' => [
-                'method'=> 'POST',
-                'header'=> 'Content-type: application/json; charset=UTF-8', //json形式で送る
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/json; charset=UTF-8', //json形式で送る
                 'content' => $data
                 ]
         ];
         $context = stream_context_create($options);
-        $contents = file_get_contents('https://ifive.sakura.ne.jp/yuki/yuki_goods.php', false, $context);
+        $contents = file_get_contents(config('url.goods'), false, $context);
 
         if (!empty(json_decode($contents)->status)){
             $flash = ["success" => "登録に成功しました"];
@@ -123,31 +126,25 @@ class GoodsController extends Controller
         return redirect('/goods')->with('flash', $flash);
     }
 
+    //編集ページ
     public function edit($id){
-        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?id={$id}";
+        $url = config('url.goods').'?id='.$id;
         $data = Helper::api_return_result($url);
 
-        switch($data[0]){
-            case 200:
-                $goods = current($data[1]);
-            break;
-            case 404:
-                return redirect('/404error');
-            break;
-            default :
-                return redirect('/error');
-            break;
+        if($data != ["失敗"]){
+            return view('goods/edit', ['goods' => $data]);
+        } else {
+            return redirect('/error');
         }
-
-        return view('goods/edit', ['goods' => $goods]);
     }
 
+    //商品編集
     public function update($id, Request $request){
-        $url = 'https://ifive.sakura.ne.jp/yuki/yuki_goods.php';
+        $url = config('url.goods');
         //base64にエンコードして保存する
         if (!empty($request->file('goods_image'))) {
             $mimeType = $request->file('goods_image')->getMimeType();
-            $imageData = "data:" . $mimeType . ";base64," . base64_encode(file_get_contents($request->file('goods_image')->getRealPath()));
+            $imageData = "data:".$mimeType.";base64,".base64_encode(file_get_contents($request->file('goods_image')->getRealPath()));
         } else {
             $imageData = null;
         }
@@ -185,8 +182,9 @@ class GoodsController extends Controller
         return redirect("/goods/{$id}")->with('flash', $flash);
     }
 
+    //商品削除
     public function destroy($id){
-        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?id={$id}";
+        $url = config('url.goods').'?id='.$id;
         $options = [
             'http' => [
                 'method' => 'DELETE'

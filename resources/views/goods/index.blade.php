@@ -1,7 +1,7 @@
 @extends('layouts/default')
 
 @section('css')
-<link rel="stylesheet" href="{{asset('css/goods_index.css')}}">
+<link rel="stylesheet" href="{{ asset('css/goods_index.css') }}">
 @endsection
 
 @section('title', '商品ページ')

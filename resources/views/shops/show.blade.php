@@ -1,8 +1,8 @@
 @extends('layouts/default')
 
 @section('css')
-<link rel="stylesheet" href="{{asset('css/goods_show.css')}}">
-<link rel="stylesheet" href="{{asset('css/goods_index.css')}}">
+<link rel="stylesheet" href="{{ asset('css/goods_show.css') }}">
+<link rel="stylesheet" href="{{ asset('css/goods_index.css') }}">
 @endsection
 
 @section('title', $shop['name'].'のページ')
