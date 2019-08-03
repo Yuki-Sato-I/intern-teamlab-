@@ -30,7 +30,12 @@
       </div>
       <div>
         <label for="shop">ショップ名</label>
-        <input type="text" id="shop" name="goods_shop" class="form-control">
+        <select name="goods_shop" required>
+          <option></option>
+          @foreach ($shops as $shop)
+            <option value={{ $shop["name"] }}>{{ $shop["name"] }}</option>
+          @endforeach
+        </select>
       </div>
       <div style="margin: 10px auto;">
         <input type="submit" value="送信" class="btn btn-primary btn-block"  onclick="check(this);return false;">
