@@ -8,7 +8,7 @@ use app\lib\Helper;
 class ShopsController extends Controller
 {
     public function index(){
-        $url = "https://ifive.sakura.ne.jp/yuki/yuki_shop.php";
+        $url = config('url.shop');
         $data = Helper::api_return_result($url);
         switch($data[0]){
             case 200:
@@ -24,7 +24,7 @@ class ShopsController extends Controller
     }
 
     public function show($id){
-        $url = "https://ifive.sakura.ne.jp/yuki/yuki_shop.php?id={$id}";
+        $url = config('url.shop').'?id='.$id;
         $data = Helper::api_return_result($url);
         switch($data[0]){
             case 200:
@@ -38,7 +38,7 @@ class ShopsController extends Controller
             break;
         }
 
-        $url = "https://ifive.sakura.ne.jp/yuki/yuki_goods.php?shop={$shop['name']}";
+        $url = config('url.goods').'?shop='.$shop['name'];
         $data = Helper::api_return_result($url);
         switch($data[0]){
             case 200:
