@@ -27,7 +27,11 @@
         <select name="goods_shop" required>
           <option></option>
           @foreach ($shops as $shop)
-            <option value={{ $shop["name"] }}>{{ $shop["name"] }}</option>
+            <option value={{ $shop["name"] }}
+            @if ($shop['name'] == $goods['shop'])
+                selected
+            @endif
+            >{{ $shop["name"] }}</option>
           @endforeach
         </select><br>
         <div style="margin: 10px auto;">
