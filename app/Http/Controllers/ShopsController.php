@@ -29,9 +29,13 @@ class ShopsController extends Controller
 
         if($shopData != ["失敗"]){
             $url = config('url.goods').'?shop='.$shopData['name'];
-            $data = Helper::api_return_result($url);
-            if($data != ["失敗"]){
-                return view('shops/show', ['shop' => $shopData, 'goods' => $data]);
+            $itemData = Helper::api_return_result($url);
+            if($itemData != ["失敗"]){
+                //dataが一個のみの場合の対応
+                if(isset($itemData['id'])){
+                    $itemData = [$itemData];
+                }
+                return view('shops/show', ['shop' => $shopData, 'goods' => $itemData]);
             } 
         }
 
