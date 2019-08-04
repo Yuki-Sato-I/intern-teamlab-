@@ -42,19 +42,21 @@ class GoodsController extends Controller
         $searchInfo = [];
 
         if (!empty($title)) {
-            $url .= "title={$title}&";
             $searchInfo += ["title" => $title]; 
+            $title = urlencode($title);
+            $url .= "title={$title}&";
         }
         if (!empty($shop)) {
-            $url .= "shop={$shop}&";
             $searchInfo += ["shop" => $shop];
+            $shop = urlencode($shop);
+            $url .= "shop={$shop}&";
         }
         //0がemptyになるため
         if (!($priceLower === null) && !($priceUpper === null)) {
             $url .= "priceLower={$priceLower}&priceUpper={$priceUpper}";
             $searchInfo += ["priceLower" => (int)$priceLower, "priceUpper" => (int)$priceUpper];
         }
-        $url = str_replace(' ', '%20', $url);
+
         $data = Helper::api_return_result($url);
         //dataが一個のみの場合の対応
         if(isset($data['id'])){
@@ -181,8 +183,7 @@ class GoodsController extends Controller
 
         $context = stream_context_create($options);
         $contents = file_get_contents($url, false, $context);
-
-
+        
         if (!empty(json_decode($contents)->status)){
             $flash = ["success" => "編集に成功しました"];
         }else{
