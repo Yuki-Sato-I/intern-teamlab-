@@ -154,6 +154,8 @@ class GoodsController extends Controller
         if (!empty($request->file('goods_image'))) {
             $mimeType = $request->file('goods_image')->getMimeType();
             $imageData = "data:".$mimeType.";base64,".base64_encode(file_get_contents($request->file('goods_image')->getRealPath()));
+        } elseif (!empty($request->input('pre_goods_image'))) {
+            $imageData = $request->input('pre_goods_image');
         } else {
             $imageData = null;
         }
