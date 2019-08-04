@@ -11,7 +11,10 @@ class ShopsController extends Controller
     public function index(){
         $url = config('url.shop');
         $data = Helper::api_return_result($url);
-        
+        //dataが一個のみの場合の対応
+        if(isset($data['id'])){
+            $data = [$data];
+        }
         if($data != ["失敗"]){
             return view('shops/index', ['shops' => $data]);
         } else {

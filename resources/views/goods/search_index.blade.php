@@ -8,6 +8,10 @@
 
 @section('content')
 
+@php
+  $searchInfo = str_replace('%20', ' ', $searchInfo);
+@endphp
+
 <h1 class="goods-index-title">検索結果</h1>
 <p style="text-align:center;">
   検索条件(

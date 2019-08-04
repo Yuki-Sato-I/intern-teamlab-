@@ -54,7 +54,12 @@ class GoodsController extends Controller
             $url .= "priceLower={$priceLower}&priceUpper={$priceUpper}";
             $searchInfo += ["priceLower" => (int)$priceLower, "priceUpper" => (int)$priceUpper];
         }
+        $url = str_replace(' ', '%20', $url);
         $data = Helper::api_return_result($url);
+        //dataが一個のみの場合の対応
+        if(isset($data['id'])){
+            $data = [$data];
+        }
         if($data != ["失敗"]){
             return view('goods/search_index', ['goods' => $data, 'searchInfo' => $searchInfo]);
         } else {
