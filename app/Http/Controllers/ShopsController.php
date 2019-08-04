@@ -7,10 +7,14 @@ use app\lib\Helper;
 
 class ShopsController extends Controller
 {
+    //一覧ページ
     public function index(){
         $url = config('url.shop');
         $data = Helper::api_return_result($url);
-        
+        //dataが一個のみの場合の対応
+        if(isset($data['id'])){
+            $data = [$data];
+        }
         if($data != ["失敗"]){
             return view('shops/index', ['shops' => $data]);
         } else {
@@ -18,15 +22,20 @@ class ShopsController extends Controller
         }
     }
 
+    //詳細ページ
     public function show($id){
         $url = config('url.shop').'?id='.$id;
         $shopData = Helper::api_return_result($url);
 
         if($shopData != ["失敗"]){
             $url = config('url.goods').'?shop='.$shopData['name'];
-            $data = Helper::api_return_result($url);
-            if($data != ["失敗"]){
-                return view('shops/show', ['shop' => $shopData, 'goods' => $data]);
+            $itemData = Helper::api_return_result($url);
+            if($itemData != ["失敗"]){
+                //dataが一個のみの場合の対応
+                if(isset($itemData['id'])){
+                    $itemData = [$itemData];
+                }
+                return view('shops/show', ['shop' => $shopData, 'goods' => $itemData]);
             } 
         }
 

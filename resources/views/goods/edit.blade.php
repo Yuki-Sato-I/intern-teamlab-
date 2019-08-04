@@ -17,14 +17,24 @@
         <label for="content">商品詳細</label>
         <textarea id="content" name="goods_content" class="form-control" rows="6" required>{{$goods['content']}}</textarea>
         
-        <label for="image">商品画像(png,jpeg,jpgのみ)</label>
-        <input type="file" id="image" name="goods_image" value={{$goods['image']}} class="form-control" accept="image/png, image/jpeg, image/jpg">
+        <label for="image">商品画像(png,jpeg,jpgのみ)(画像変更しない場合は選択しないでください)</label>
+        <input type="file" id="image" name="goods_image" class="form-control" accept="image/png, image/jpeg, image/jpg">
+        <input type="hidden" name="pre_goods_image" value={{$goods['image']}}>
         
         <label for="price">商品値段</label>
         <input type="number" id="price" name="goods_price" value={{$goods['price']}} class="form-control" required>
-        
-        <label for="shop">ショップ名</label>
-        <input type="text" id="shop" name="goods_shop" value={{$goods['shop']}} class="form-control" required>
+
+        <label for="shop">ショップ名</label><br>
+        <select name="goods_shop" required>
+          <option></option>
+          @foreach ($shops as $shop)
+            <option value={{ $shop["name"] }}
+            @if ($shop['name'] == $goods['shop'])
+                selected
+            @endif
+            >{{ $shop["name"] }}</option>
+          @endforeach
+        </select><br>
         <div style="margin: 10px auto;">
           <input type="submit" value="送信" class="btn btn-primary btn-block">
         </div>

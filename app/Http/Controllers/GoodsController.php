@@ -42,19 +42,26 @@ class GoodsController extends Controller
         $searchInfo = [];
 
         if (!empty($title)) {
-            $url .= "title={$title}&";
             $searchInfo += ["title" => $title]; 
+            $title = urlencode($title);
+            $url .= "title={$title}&";
         }
         if (!empty($shop)) {
-            $url .= "shop={$shop}&";
             $searchInfo += ["shop" => $shop];
+            $shop = urlencode($shop);
+            $url .= "shop={$shop}&";
         }
         //0がemptyになるため
         if (!($priceLower === null) && !($priceUpper === null)) {
             $url .= "priceLower={$priceLower}&priceUpper={$priceUpper}";
             $searchInfo += ["priceLower" => (int)$priceLower, "priceUpper" => (int)$priceUpper];
         }
+
         $data = Helper::api_return_result($url);
+        //dataが一個のみの場合の対応
+        if(isset($data['id'])){
+            $data = [$data];
+        }
         if($data != ["失敗"]){
             return view('goods/search_index', ['goods' => $data, 'searchInfo' => $searchInfo]);
         } else {
@@ -129,13 +136,17 @@ class GoodsController extends Controller
     //編集ページ
     public function edit($id){
         $url = config('url.goods').'?id='.$id;
-        $data = Helper::api_return_result($url);
+        $goodsData = Helper::api_return_result($url);
 
-        if($data != ["失敗"]){
-            return view('goods/edit', ['goods' => $data]);
-        } else {
-            return redirect('/error');
+        if($goodsData != ["失敗"]){
+            $url = config('url.shop');
+            $shopsData = Helper::api_return_result($url);
+            if($shopsData != ["失敗"]){
+                return view('goods/edit', ['goods' => $goodsData, 'shops' => $shopsData]);
+            }
         }
+
+        return redirect('/error');
     }
 
     //商品編集
@@ -145,6 +156,8 @@ class GoodsController extends Controller
         if (!empty($request->file('goods_image'))) {
             $mimeType = $request->file('goods_image')->getMimeType();
             $imageData = "data:".$mimeType.";base64,".base64_encode(file_get_contents($request->file('goods_image')->getRealPath()));
+        } elseif (!empty($request->input('pre_goods_image'))) {
+            $imageData = $request->input('pre_goods_image');
         } else {
             $imageData = null;
         }
@@ -157,7 +170,6 @@ class GoodsController extends Controller
             'price' => (int)$request->input('goods_price'),
             'shop' => $request->input('goods_shop')
         ];
-
         $data = json_encode($data);
 
         $options = [
@@ -171,8 +183,7 @@ class GoodsController extends Controller
 
         $context = stream_context_create($options);
         $contents = file_get_contents($url, false, $context);
-
-
+        
         if (!empty(json_decode($contents)->status)){
             $flash = ["success" => "編集に成功しました"];
         }else{
