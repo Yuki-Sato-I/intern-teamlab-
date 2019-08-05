@@ -8,8 +8,9 @@ use app\lib\Helper;
 class ShopsController extends Controller
 {
     //一覧ページ
-    public function index(){
-        $url = config('url.shop');
+    public function index(Request $request){
+        $page = $request->query('page') ?? "1";
+        $url = config('url.shop')."?page=".$page;
         $data = Helper::api_return_result($url);
         //dataが一個のみの場合の対応
         if(isset($data['id'])){
@@ -23,12 +24,13 @@ class ShopsController extends Controller
     }
 
     //詳細ページ
-    public function show($id){
+    public function show($id, Request $request){
         $url = config('url.shop').'?id='.$id;
         $shopData = Helper::api_return_result($url);
 
         if($shopData != ["失敗"]){
-            $url = config('url.goods').'?shop='.$shopData['name'];
+            $page = $request->query('page') ?? "1";
+            $url = config('url.goods').'?shop='.$shopData['name']."&page=".$page;
             $itemData = Helper::api_return_result($url);
             if($itemData != ["失敗"]){
                 //dataが一個のみの場合の対応

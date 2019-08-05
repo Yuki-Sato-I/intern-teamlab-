@@ -8,8 +8,10 @@ use app\lib\Helper;
 class GoodsController extends Controller
 {
     //一覧ページ
-    public function index(){
-        $url = config('url.goods');
+    public function index(Request $request){
+        $page = $request->query('page') ?? "1";
+        $url = config('url.goods')."?page=".$page;
+  
         $data = Helper::api_return_result($url);
 
         if($data != ["失敗"]){
@@ -33,7 +35,9 @@ class GoodsController extends Controller
 
     //検索結果ページ
     public function search_index(Request $request){
-        $url = config('url.goods').'?';
+        $page = $request->query('page') ?? "1";
+        $url = config('url.goods').'?page='.$page."&";
+
 
         $title = $request->input('goods_title');
         $shop = $request->input('goods_shop');
