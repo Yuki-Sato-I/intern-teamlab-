@@ -6,7 +6,9 @@ class Helper {
   
   //apiを叩いて,データを取得する関数
   /**
-   * $url: 受信先url
+   * @param String $url 受信先url
+   * 
+   * @return Array $data 受信データ(失敗した場合は[失敗]) 
    */
   public static function api_return_result($url) {
     //自分で処理したいから自動エラーなくす    
@@ -29,9 +31,11 @@ class Helper {
 
   //データを送信する関数
   /**
-   * $data: 送信するデータ
-   * $url: 送信先url
-   * $method: HTTPリクエストメソッド
+   * @param Array $data 送信するデータ
+   * @param String $url 送信先url
+   * @param String $method HTTPリクエストメソッド
+   * 
+   * @return Array flashメッセージ  
    */
   public static function api_send_data($data, $url, $method) {
     $data = json_encode($data);
