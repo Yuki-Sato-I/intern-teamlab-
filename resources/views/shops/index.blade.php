@@ -25,4 +25,16 @@
 </a>
 @endforeach
 </div>
+<div class="my-pager">
+  <ui class="my-pagination">
+    @for($i = 1; $i <= $pageCount; $i++)
+      <li><a href={{ url("/shops?page={$i}") }}
+          @if($i == $currentPage)
+            class="active"
+            style="pointer-events: none;"
+          @endif
+      ><span>{{ $i }}</span></a></li>
+    @endfor
+  </ui>
+</div>
 @endsection

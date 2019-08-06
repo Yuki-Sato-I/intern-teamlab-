@@ -11,11 +11,13 @@ class GoodsController extends Controller
     public function index(Request $request){
         $page = $request->query('page') ?? "1";
         $url = config('url.goods')."?page=".$page;
+        $countUrl = config('url.goods');
   
         $data = Helper::api_return_result($url);
-
+        $dataTotalCount = count(Helper::api_return_result($countUrl));
+        $pageCount = ceil($dataTotalCount / 10);
         if($data != ["失敗"]){
-            return view('goods/index', ['goodsInfo' => $data]);
+            return view('goods/index', ['goodsInfo' => $data, 'pageCount' => $pageCount, 'currentPage' => $page]);
         } else {
             return redirect('/error');
         }
@@ -37,6 +39,7 @@ class GoodsController extends Controller
     public function search_index(Request $request){
         $page = $request->query('page') ?? "1";
         $url = config('url.goods').'?page='.$page."&";
+        $countUrl = config('url.goods').'?';
 
 
         $title = $request->input('goods_title');
@@ -49,25 +52,32 @@ class GoodsController extends Controller
             $searchInfo += ["title" => $title]; 
             $title = urlencode($title);
             $url .= "title={$title}&";
+            $countUrl .= "title={$title}&";
         }
         if (!empty($shop)) {
             $searchInfo += ["shop" => $shop];
             $shop = urlencode($shop);
             $url .= "shop={$shop}&";
+            $countUrl .= "shop={$shop}&";
         }
         //0がemptyになるため
         if (!($priceLower === null) && !($priceUpper === null)) {
             $url .= "priceLower={$priceLower}&priceUpper={$priceUpper}";
+            $countUrl .= "priceLower={$priceLower}&priceUpper={$priceUpper}";
             $searchInfo += ["priceLower" => (int)$priceLower, "priceUpper" => (int)$priceUpper];
         }
 
         $data = Helper::api_return_result($url);
+        $dataTotalCount = count(Helper::api_return_result($countUrl));
+        $pageCount = ceil($dataTotalCount / 10);
+
         //dataが一個のみの場合の対応
         if(isset($data['id'])){
             $data = [$data];
         }
         if($data != ["失敗"]){
-            return view('goods/search_index', ['goods' => $data, 'searchInfo' => $searchInfo]);
+            return view('goods/search_index', ['goods' => $data, 'searchInfo' => $searchInfo, 
+                                               'pageCount' => $pageCount, 'currentPage' => $page]);
         } else {
             return redirect('/error');
         }

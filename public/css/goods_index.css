@@ -38,3 +38,55 @@
   text-decoration: none;
   color: black;
 }
+
+
+.my-pager {
+  display: block;
+  width: 650px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.my-pager .my-pagination {
+text-align: center;
+
+}
+
+.my-pager .my-pagination li {
+display: inline;
+margin: 0 2px;
+padding: 0;
+display: inline-block;
+background: #98fb98;
+width: 50px;
+height: 50px;
+text-align: center;
+position: relative;
+border-radius: 10px;
+}
+
+
+.my-pager .my-pagination li a{
+vertical-align: middle;
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+text-align: center;
+display:table;
+color: #fff;
+text-decoration: none;
+}
+
+.my-pager .my-pagination li a span{
+display:table-cell;
+vertical-align:middle;
+}
+
+.my-pager .my-pagination li a:hover,
+.my-pager .my-pagination li a.active{
+color: #000;
+background: #c8fac8;
+border-radius: 10px;
+}
