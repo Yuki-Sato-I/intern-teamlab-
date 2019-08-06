@@ -8,16 +8,12 @@ use app\lib\Helper;
 class GoodsController extends Controller
 {
     //一覧ページ
-    public function index(Request $request){
-        $page = $request->query('page') ?? "1";
-        $url = config('url.goods')."?page=".$page;
-        $countUrl = config('url.goods');
-  
+    public function index(){
+        $url = config('url.goods');
         $data = Helper::api_return_result($url);
-        $dataTotalCount = count(Helper::api_return_result($countUrl));
-        $pageCount = ceil($dataTotalCount / 10);
+
         if($data != ["失敗"]){
-            return view('goods/index', ['goodsInfo' => $data, 'pageCount' => $pageCount, 'currentPage' => $page]);
+            return view('goods/index', ['goodsInfo' => $data]);
         } else {
             return redirect('/error');
         }
@@ -37,10 +33,7 @@ class GoodsController extends Controller
 
     //検索結果ページ
     public function search_index(Request $request){
-        $page = $request->query('page') ?? "1";
-        $url = config('url.goods').'?page='.$page."&";
-        $countUrl = config('url.goods').'?';
-
+        $url = config('url.goods').'?';
 
         $title = $request->input('goods_title');
         $shop = $request->input('goods_shop');
@@ -52,32 +45,25 @@ class GoodsController extends Controller
             $searchInfo += ["title" => $title]; 
             $title = urlencode($title);
             $url .= "title={$title}&";
-            $countUrl .= "title={$title}&";
         }
         if (!empty($shop)) {
             $searchInfo += ["shop" => $shop];
             $shop = urlencode($shop);
             $url .= "shop={$shop}&";
-            $countUrl .= "shop={$shop}&";
         }
         //0がemptyになるため
         if (!($priceLower === null) && !($priceUpper === null)) {
             $url .= "priceLower={$priceLower}&priceUpper={$priceUpper}";
-            $countUrl .= "priceLower={$priceLower}&priceUpper={$priceUpper}";
             $searchInfo += ["priceLower" => (int)$priceLower, "priceUpper" => (int)$priceUpper];
         }
 
         $data = Helper::api_return_result($url);
-        $dataTotalCount = count(Helper::api_return_result($countUrl));
-        $pageCount = ceil($dataTotalCount / 10);
-
         //dataが一個のみの場合の対応
         if(isset($data['id'])){
             $data = [$data];
         }
         if($data != ["失敗"]){
-            return view('goods/search_index', ['goods' => $data, 'searchInfo' => $searchInfo, 
-                                               'pageCount' => $pageCount, 'currentPage' => $page]);
+            return view('goods/search_index', ['goods' => $data, 'searchInfo' => $searchInfo]);
         } else {
             return redirect('/error');
         }
@@ -109,7 +95,6 @@ class GoodsController extends Controller
 
     //商品登録
     public function store(Request $request){
-        $url = config('url.goods');
         //base64にエンコードして保存する
         if (!empty($request->file('goods_image'))) {
             $mimeType = $request->file('goods_image')->getMimeType();
@@ -125,7 +110,25 @@ class GoodsController extends Controller
             'price' => (int)$request->input('goods_price'),
             'shop' => $request->input('goods_shop')
         ];
-        $flash = Helper::api_send_data($data, $url, 'POST');
+
+        $data = json_encode($data);
+
+        $options = [
+            // HTTPコンテキストオプションをセット
+            'http' => [
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/json; charset=UTF-8', //json形式で送る
+                'content' => $data
+                ]
+        ];
+        $context = stream_context_create($options);
+        $contents = file_get_contents(config('url.goods'), false, $context);
+
+        if (!empty(json_decode($contents)->status)){
+            $flash = ["success" => "登録に成功しました"];
+        }else{
+            $flash = ["danger" => "登録に失敗しました"];
+        }
         
         return redirect('/goods')->with('flash', $flash);
     }
@@ -167,7 +170,25 @@ class GoodsController extends Controller
             'price' => (int)$request->input('goods_price'),
             'shop' => $request->input('goods_shop')
         ];
-        $flash = Helper::api_send_data($data, $url, 'PUT');
+        $data = json_encode($data);
+
+        $options = [
+            // HTTPコンテキストオプションをセット
+            'http' => [
+                'method' => 'PUT',
+                'header' => 'Content-type: application/json; charset=UTF-8', //json形式で送る
+                'content' => $data
+                ]
+        ];
+
+        $context = stream_context_create($options);
+        $contents = file_get_contents($url, false, $context);
+        
+        if (!empty(json_decode($contents)->status)){
+            $flash = ["success" => "編集に成功しました"];
+        }else{
+            $flash = ["danger" => "編集に失敗しました"];
+        }
 
         return redirect("/goods/{$id}")->with('flash', $flash);
     }

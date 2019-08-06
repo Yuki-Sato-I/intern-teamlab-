@@ -9,19 +9,6 @@
 @section('content')
 
 @php
-  $url = "/search-index?";
-  foreach ($searchInfo as $key => $value) {
-    if ($key == 'shop'){
-      $query = "goods_shop";
-    } elseif ($key == 'title') {
-      $query = "goods_title";
-    } elseif ($key == 'priceLower') {
-      $query = "price_lower";
-    } elseif ($key == "priceUpper") {
-      $query = "price_upper";
-    }
-    $url .= "{$query}={$value}&";
-  }
   $searchInfo = str_replace('%20', ' ', $searchInfo);
 @endphp
 
@@ -57,17 +44,5 @@
   </ul>
 </a>
 @endforeach
-</div>
-<div class="my-pager">
-  <ui class="my-pagination">
-    @for($i = 1; $i <= $pageCount; $i++)
-      <li><a href={{ url("{$url}page={$i}") }}
-          @if($i == $currentPage)
-            class="active"
-            style="pointer-events: none;"
-          @endif
-      ><span>{{ $i }}</span></a></li>
-    @endfor
-  </ui>
 </div>
 @endsection
