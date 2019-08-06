@@ -5,6 +5,9 @@ namespace app\lib;
 class Helper {
   
   //apiを叩いて,データを取得する関数
+  /**
+   * $url: 受信先url
+   */
   public static function api_return_result($url) {
     //自分で処理したいから自動エラーなくす    
     $context = stream_context_create(["http"=> ["ignore_errors" => true]]);
@@ -23,6 +26,36 @@ class Helper {
     }
     return $data;
   }
+
+  //データを送信する関数
+  /**
+   * $data: 送信するデータ
+   * $url: 送信先url
+   * $method: HTTPリクエストメソッド
+   */
+  public static function api_send_data($data, $url, $method) {
+    $data = json_encode($data);
+    $options = [
+      // HTTPコンテキストオプションをセット
+      'http' => [
+          'method'  => $method,
+          'header'  => 'Content-type: application/json; charset=UTF-8', //json形式で送る
+          'content' => $data
+          ]
+    ];
+    $context = stream_context_create($options);
+    $contents = file_get_contents($url, false, $context);
+
+    if (!empty(json_decode($contents)->status)){
+      $flash = ["success" => "編集に成功しました"];
+    }else{
+      $flash = ["danger" => "編集に失敗しました"];
+    }
+
+    return $flash;
+  }
+
+
 }
 
 ?>
